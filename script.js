@@ -33,6 +33,11 @@ let container = document.querySelector(".container");
 const main = document.querySelector("body");
 createGird(16);
 resizeButton.addEventListener("click", () => {
-    const squaresPerSide = prompt("Number of squares per side: ");
-    createGird(squaresPerSide);
+    let squaresPerSide = parseInt(prompt("Number of squares per side (Max.: 100):"));
+    console.log(squaresPerSide);
+    if (isNaN(squaresPerSide) || squaresPerSide > 100 || squaresPerSide <= 0){
+        alert("Invalid number...");
+    }else{
+        createGird(squaresPerSide);
+    }
 });
