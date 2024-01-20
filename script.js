@@ -2,7 +2,7 @@ function createGird(squaresPerSide){
     container.remove();
     container = document.createElement("div");
     container.className = "container";
-    const boxSize = Math.floor(GRID_HEIGHT/squaresPerSide);
+    const boxSize = Math.round(GRID_HEIGHT/squaresPerSide * 100)/100;
     console.log(boxSize);
     for(let i=0; i<squaresPerSide; i++){
         const currentRow = document.createElement("div");

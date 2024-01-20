@@ -19,7 +19,7 @@
     display: flex;
 }
 .square{
-    /* outline: 1px solid rgb(145, 145, 145); */
+    outline: 1px solid rgb(216, 216, 216);
 }
 .default{
     background-color: white;
