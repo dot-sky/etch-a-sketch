@@ -1,11 +1,24 @@
 function getRandomNumber(upperLimit){
     return Math.floor((Math.random() * (upperLimit+1))); 
 }
-function getRandomRGB(){
+function getRandomRGBA(){
     const red = getRandomNumber(255);
     const green = getRandomNumber(255);
     const blue = getRandomNumber(255);
-    return `rgb(${red},${green},${blue})`;
+    if (fadeEffect){
+        alpha = "0.1";
+    }
+    else{
+        alpha = "1";
+    }
+    return `rgba(${red},${green},${blue},${alpha})`;
+}
+function getRGBAValues(rgba){
+    let colors = rgba.slice(rgba.indexOf("(")+1,rgba.indexOf(")"));
+    return colors.split(",");
+}
+function buildRGBAString(rgba){
+    return `rgba(${rgba[0]},${rgba[1]},${rgba[2]},${rgba[3]})`;
 }
 function createGrid(squaresPerSide){
     container.remove();
@@ -17,22 +30,46 @@ function createGrid(squaresPerSide){
         currentRow.className = "row";
         for (let i = 0; i < squaresPerSide; i++) {
             const box = document.createElement("div");
-            box.className = "square";
             box.style.backgroundColor = WHITE;
             box.style.width = boxSize + "px";
             box.style.height = boxSize + "px";
             currentRow.appendChild(box);
+            box.addEventListener("mousedown",() => {
+                draw = true;
+            })
+            box.addEventListener("mouseup",()=>{
+                draw = false;
+            })
+            box.addEventListener("click",()=>{
+                draw = false;
+            })
             box.addEventListener("mouseover",() => {
-                box.classList.remove("default");
-                if (rainbowEffect){
-                    box.style.backgroundColor = getRandomRGB();
+                if (draw){
+                    if(fadeEffect && box.classList.contains("box-hover")){
+                        const rgba = getRGBAValues(box.style.backgroundColor);
+                        if (rgba.length === 4){
+                            let alpha = parseFloat(rgba[3]);
+                            if (alpha < 1){
+                                alpha += 0.1;
+                            }
+                            rgba[3] = alpha;
+                            const newColor = buildRGBAString(rgba);
+                            box.style.backgroundColor = newColor;
+                        }
+                    }
+                    else{
+                        if (rainbowEffect){
+                            box.style.backgroundColor = getRandomRGBA();
+                        }
+                        else if (fadeEffect){
+                            box.style.backgroundColor = BLACK_TRANSPARENT;
+                        }
+                        else{
+                            box.style.backgroundColor = BLACK;
+                        }
+                        box.classList.add("box-hover")
+                    }
                 }
-                else{
-                    box.style.backgroundColor = BLACK;
-                }
-            });
-            box.addEventListener("mouseout",() => {
-                box.classList.remove("box-hover");
             });
         }
         container.appendChild(currentRow);
@@ -41,15 +78,19 @@ function createGrid(squaresPerSide){
 }
 const GRID_WIDTH = 600;
 const GRID_HEIGHT = 600;
-const WHITE = "rgb(255,255,255)";
-const BLACK = "rgb(0,0,0)"
+const WHITE = "rgba(255,255,255,0)";
+const BLACK_TRANSPARENT = "rgba(0,0,0,0.1)"
+const BLACK = "rgba(0,0,0)"
 const resizeButton = document.querySelector("#resize");
 const clearButton = document.querySelector("#clear");
 const colorButton = document.querySelector("#color");
+const fadeButton = document.querySelector("#fade");
 let container = document.querySelector(".container");
 const main = document.querySelector("body");
+let fadeEffect = false;
 let rainbowEffect = false;
-let squares = 16;
+let squares = 32;
+let draw = false;
 createGrid(squares);
 resizeButton.addEventListener("click", () => {
     let squaresPerSide = parseInt(prompt("Number of squares per side (Max.: 100):"));
@@ -71,4 +112,10 @@ colorButton.addEventListener("click", () => {
     else{
         colorButton.textContent = "Rainbow";
     }
+})
+fadeButton.addEventListener("click", () => {
+    fadeEffect = !fadeEffect;
+})
+container.addEventListener("mouseleave", () => {
+    draw = false;
 })
