@@ -1,7 +1,13 @@
 *{
     margin: 0;
-    background-color: aliceblue;
     font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    background-color: aliceblue;
+}
+h1{
+    text-align: center;
+    color: rgb(22, 22, 22);
 }
 .container{
     display: flex;
@@ -27,17 +33,18 @@
 .box-hover{
     background-color: black;
 }
-h1{
-    text-align: center;
-    color: rgb(22, 22, 22);
-}
-.header{
+
+.flex-center{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.header{
     gap: 100px;
     margin: 16px;
-
+}
+.buttons-section{
+    gap: 16px;
 }
 .button {
     display: flex;
