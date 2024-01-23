@@ -41,6 +41,9 @@ function createGrid(squaresPerSide){
             box.style.width = boxSize + "px";
             box.style.height = boxSize + "px";
             currentRow.appendChild(box);
+            box.addEventListener("dragstart",event=>{
+                event.preventDefault(); // prevents dragging effect on div
+            })
             box.addEventListener("mousedown",() => {
                 draw = true;
             })
