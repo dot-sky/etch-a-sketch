@@ -39,6 +39,13 @@ h1{
     align-items: center;
     height: 32px;
     width: 90px;
+}
+.active{
     background-color: rgb(61, 196, 151);
+    color: white;
+
+}
+.inactive{
+    background-color: rgb(87, 87, 87);
     color: white;
 }
